@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio • Arpan Tiwari</title>
+  <meta name="description" content="A clean, modern, and responsive one-page portfolio built with only HTML & CSS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ====== THEME & RESET ====== */
+    :root{
+      --bg: #0b0d12;
+      --bg-soft:#0f1218;
+      --card:#121621;
+      --text: #e6e8ee;
+      --muted:#9aa3b2;
+      --brand: #7c5cff;
+      --brand-2:#22d3ee;
+      --ring: #2a3347;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --pad: 1.25rem;
+      --grad: linear-gradient(135deg,var(--brand), var(--brand-2));
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fb; --bg-soft:#ffffff; --card:#ffffff; --text:#0b0d12; --muted:#606d85; --ring:#e7e9f1;
+        --shadow: 0 10px 30px rgba(12,18,36,.08);
+      }
+    }
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text); background: radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,.15),transparent 60%),
+               radial-gradient(1000px 500px at -10% 10%, rgba(34,211,238,.10),transparent 60%),
+               var(--bg);
+      line-height:1.6; letter-spacing:.2px; overflow-x:hidden;
+    }
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    /* ====== LAYOUT ====== */
+    .container{ width:min(1120px, 92vw); margin-inline:auto; }
+    .grid{ display:grid; gap:1.25rem; }
+
+    /* ====== NAVBAR ====== */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(180%) blur(12px);
+      background: color-mix(in srgb, var(--bg-soft) 80%, transparent);
+      border-bottom:1px solid var(--ring);
+    }
+    .nav{ display:flex; align-items:center; justify-content:space-between; padding:.8rem 0; }
+    .brand{ display:flex; align-items:center; gap:.75rem; font-weight:700; letter-spacing:.5px; }
+    .logo{
+      width:36px; height:36px; border-radius:12px; background:var(--grad);
+      box-shadow:var(--shadow);
+    }
+    .links{ display:flex; gap:1rem; }
+    .links a{ padding:.55rem .9rem; border-radius:999px; border:1px solid transparent; }
+    .links a:hover{ border-color:var(--ring); background:color-mix(in srgb, var(--card) 82%, transparent); }
+
+    /* ====== HERO ====== */
+    .hero{ position:relative; padding:clamp(3rem, 8vw, 6rem) 0 3rem; }
+    .hero-wrap{ display:grid; grid-template-columns:1.1fr .9fr; gap:2rem; align-items:center; }
+    @media (max-width:900px){ .hero-wrap{ grid-template-columns:1fr; } }
+
+    .kicker{ color:var(--muted); font-weight:600; letter-spacing:.18em; text-transform:uppercase; }
+    .title{ font-size: clamp(2.1rem, 7vw, 3.4rem); line-height:1.1; margin:.4rem 0 1rem; font-weight:800; }
+    .subtitle{ color:var(--muted); max-width:60ch; }
+    .cta{ margin-top:1.75rem; display:flex; gap:.75rem; flex-wrap:wrap; }
+    .btn{ padding:.85rem 1.1rem; border-radius:12px; font-weight:600; border:1px solid var(--ring); background:var(--card); box-shadow:var(--shadow); }
+    .btn.primary{ background:var(--grad); color:white; border:none; }
+
+    .hero-card{
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card) 82%, transparent), var(--card));
+      border:1px solid var(--ring); border-radius:var(--radius); padding:var(--pad);
+      box-shadow:var(--shadow); position:relative; overflow:hidden;
+    }
+    .hero-card::after{
+      content:""; position:absolute; inset:auto -20% -30% -20%; height:50%;
+      background:radial-gradient(60% 120% at 50% 0%, rgba(124,92,255,.25), transparent 60%);
+      pointer-events:none;
+    }
+    .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1rem; }
+    .stat{ background:var(--bg-soft); border:1px solid var(--ring); border-radius:14px; padding:1rem; text-align:center; }
+    .stat b{ font-size:1.6rem; display:block; }
+
+    /* ====== SECTION ====== */
+    section{ padding: clamp(2.5rem, 7vw, 4rem) 0; }
+    .section-head{ display:flex; align-items:end; justify-content:space-between; gap:1rem; margin-bottom:1.25rem; }
+    .section-title{ font-size:clamp(1.4rem, 3.2vw, 2rem); font-weight:800; }
+    .section-desc{ color:var(--muted); max-width:60ch; }
+
+    /* ====== PROJECTS ====== */
+    .projects{ grid-template-columns: repeat(12, 1fr); }
+    .card{
+      grid-column: span 4;
+      background:var(--card); border:1px solid var(--ring); border-radius:var(--radius); overflow:hidden; position:relative;
+      transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+      box-shadow:var(--shadow);
+    }
+    .card:hover{ transform: translateY(-6px); border-color: color-mix(in srgb, var(--brand) 40%, var(--ring)); box-shadow: 0 18px 50px rgba(124,92,255,.18); }
+    .thumb{ aspect-ratio: 16/10; background:linear-gradient(135deg, rgba(124,92,255,.35), rgba(34,211,238,.35)); }
+    .card-body{ padding:var(--pad); }
+    .card h3{ margin:.25rem 0 .35rem; font-size:1.1rem; }
+    .tags{ display:flex; gap:.4rem; flex-wrap:wrap; }
+    .tag{ border:1px solid var(--ring); padding:.28rem .5rem; border-radius:999px; font-size:.8rem; color:var(--muted); }
+    @media (max-width:1000px){ .card{ grid-column: span 6; } }
+    @media (max-width:640px){ .card{ grid-column: span 12; } }
+
+    /* ====== SKILLS ====== */
+    .skills{ grid-template-columns: repeat(6,1fr); }
+    .skill{ grid-column: span 3; background:var(--card); border:1px solid var(--ring); border-radius:16px; padding:1rem; }
+    .bar{ height:10px; background:color-mix(in srgb, var(--ring) 60%, transparent); border-radius:999px; overflow:hidden; margin-top:.6rem; }
+    .bar > span{ display:block; height:100%; background:var(--grad); width: var(--val, 70%); }
+    @media (max-width:900px){ .skill{ grid-column: span 6; } }
+
+    /* ====== TIMELINE ====== */
+    .timeline{ position:relative; }
+    .timeline::before{ content:""; position:absolute; left:calc(12px + .5rem); top:0; bottom:0; width:2px; background:var(--ring); }
+    .t-item{ display:grid; grid-template-columns:28px 1fr; gap:.9rem; padding:1rem 0; }
+    .dot{ width:24px; height:24px; border-radius:50%; background:var(--grad); box-shadow:var(--shadow); }
+    .t-card{ background:var(--card); border:1px solid var(--ring); border-radius:14px; padding:1rem; }
+    .t-card h4{ margin:.1rem 0 .3rem; }
+    .t-card small{ color:var(--muted); }
+
+    /* ====== CONTACT ====== */
+    .contact{ display:grid; grid-template-columns: 1fr .8fr; gap:1.25rem; }
+    .contact-card{ background:var(--card); border:1px solid var(--ring); border-radius:var(--radius); padding:var(--pad); }
+    form{ display:grid; gap:.85rem; }
+    input, textarea{
+      width:100%; padding: .9rem 1rem; border-radius:12px; border:1px solid var(--ring); background:var(--bg-soft); color:var(--text);
+      outline:none; transition:border-color .2s ease;
+    }
+    input:focus, textarea:focus{ border-color: color-mix(in srgb, var(--brand) 40%, var(--ring)); }
+    textarea{ min-height:140px; resize: vertical; }
+    @media (max-width:900px){ .contact{ grid-template-columns:1fr; } }
+
+    /* ====== FOOTER ====== */
+    footer{ padding:2rem 0 3rem; color:var(--muted); text-align:center; }
+    .foot{ display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; margin:.75rem 0 0; }
+
+    /* ====== UTIL ====== */
+    .pill{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem .75rem; border:1px solid var(--ring); background:var(--card); border-radius:999px; }
+    .accent{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .sr{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+</head>
+<body>
+  <!-- ====== NAV ====== -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Homepage">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Arpan Tiwari</span>
+      </a>
+      <nav class="links" aria-label="Primary">
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+        <a class="pill" href="mailto:arpantiwari381@gmail.com">Available for work</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== HERO ====== -->
+  <main id="top" class="hero">
+    <div class="container hero-wrap">
+      <div>
+        <div class="kicker">Designer • Developer • Creator</div>
+        <h1 class="title">Hi, I'm <span class="accent">Arpan Tiwari</span> — I build delightful, high‑performance digital experiences.</h1>
+        <p class="subtitle">Front‑end engineer with a product mindset. I turn complex problems into simple, beautiful interfaces that scale. Focused on accessibility, performance, and clean systems.</p>
+        <div class="cta">
+          <a class="btn primary" href="#projects">See Projects</a>
+          <a class="btn" href="My_Final_Resume.pdf" download>Download Résumé</a>
+          <a class="btn" href="https://github.com/mega-bytes111" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>5+</b><span>Launched projects</span></div>
+          <div class="stat"><b>3 yrs</b><span>Experience</span></div>
+          <!-- <div class="stat"><b>95</b><span>Lighthouse perf</span></div> -->
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Featured work preview">
+        <img class="thumb" alt="Project mockup placeholder" src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1600&auto=format&fit=crop" />
+        <div class="card-body">
+          <div class="pill" aria-hidden="true">Featured • Case Study</div>
+          <h3 style="margin:.7rem 0 .3rem">Next‑Gen Analytics Dashboard</h3>
+          <p style="color:var(--muted); margin:0">A modular design system with real‑time charts and theming, improving task success by 28%.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ====== PROJECTS ====== -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Selected Projects</h2>
+        <p class="section-desc">A snapshot of recent work. Each card links to a case study or live demo. Built with performance, accessibility, and polish in mind.</p>
+      </div>
+      <div class="grid projects">
+        <!-- Project Card 1 -->
+        <article class="card">
+          <img class="thumb" alt="Project thumbnail" src="https://images.unsplash.com/photo-1555169062-013468b47731?q=80&w=1600&auto=format&fit=crop" />
+          <div class="card-body">
+            <h3>Commerce UI Kit</h3>
+            <p style="color:var(--muted);">A reusable UI kit for e‑commerce flows with responsive layouts and checkout patterns.</p>
+            <div class="tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">Design System</span>
+            </div>
+          </div>
+        </article>
+        <!-- Project Card 2 -->
+        <article class="card">
+          <img class="thumb" alt="Project thumbnail" src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?q=80&w=1600&auto=format&fit=crop" />
+          <div class="card-body">
+            <h3>Portfolio Starter</h3>
+            <p style="color:var(--muted);">A fast, accessible starter template that scores 100 on best practices and SEO.</p>
+            <div class="tags">
+              <span class="tag">Semantic HTML</span>
+              <span class="tag">Responsive</span>
+              <span class="tag">A11y</span>
+            </div>
+          </div>
+        </article>
+        <!-- Project Card 3 -->
+        <article class="card">
+          <img class="thumb" alt="Project thumbnail" src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1600&auto=format&fit=crop" />
+          <div class="card-body">
+            <h3>Docs Theme</h3>
+            <p style="color:var(--muted);">Documentation theme with sticky in‑page TOC and smooth anchors—no JS required.</p>
+            <div class="tags">
+              <span class="tag">Grid</span>
+              <span class="tag">Typography</span>
+              <span class="tag">No JS</span>
+            </div>
+          </div>
+        </article>
+        <!-- Project Card 4 -->
+        <article class="card">
+          <img class="thumb" alt="Project thumbnail" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop" />
+          <div class="card-body">
+            <h3>Landing Page</h3>
+            <p style="color:var(--muted);">High‑converting launch page with gradient accents and scroll‑based highlights.</p>
+            <div class="tags">
+              <span class="tag">Flexbox</span>
+              <span class="tag">Gradients</span>
+              <span class="tag">Animations</span>
+            </div>
+          </div>
+        </article>
+        <!-- Project Card 5 -->
+        <article class="card">
+          <img class="thumb" alt="Project thumbnail" src="https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=1600&auto=format&fit=crop" />
+          <div class="card-body">
+            <h3>Startup CMS</h3>
+            <p style="color:var(--muted);">Component‑first CMS marketing site with MDX docs and beautiful theming.</p>
+            <div class="tags">
+              <span class="tag">Cards</span>
+              <span class="tag">Accessibility</span>
+              <span class="tag">SEO</span>
+            </div>
+          </div>
+        </article>
+        <!-- Project Card 6 -->
+        <article class="card">
+          <img class="thumb" alt="Project thumbnail" src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1600&auto=format&fit=crop" />
+          <div class="card-body">
+            <h3>Analytics Microsite</h3>
+            <p style="color:var(--muted);">A storytelling microsite with data‑driven visuals and crisp micro‑interactions.</p>
+            <div class="tags">
+              <span class="tag">CSS Grid</span>
+              <span class="tag">Perf</span>
+              <span class="tag">Case Study</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SKILLS ====== -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Skills</h2>
+        <p class="section-desc">A blend of design sense and engineering discipline. Comfortable owning features from brief to ship.</p>
+      </div>
+      <div class="grid skills">
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>HTML & Semantics</b><span class="tag">Expert</span>
+          </div>
+          <div class="bar"><span style="--val:95%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>Modern CSS</b><span class="tag">Advanced</span>
+          </div>
+          <div class="bar"><span style="--val:92%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>JavaScript</b><span class="tag">Expert</span>
+          </div>
+          <div class="bar"><span style="--val:95%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>React</b><span class="tag">Expert</span>
+          </div>
+          <div class="bar"><span style="--val:95%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>Design Systems</b><span class="tag">Advanced</span>
+          </div>
+          <div class="bar"><span style="--val:88%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>Performance</b><span class="tag">Advanced</span>
+          </div>
+          <div class="bar"><span style="--val:85%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>Accessibility</b><span class="tag">Advanced</span>
+          </div>
+          <div class="bar"><span style="--val:86%"></span></div>
+        </div>
+        <div class="skill">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b>Brand & Visual</b><span class="tag">Advanced</span>
+          </div>
+          <div class="bar"><span style="--val:80%"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== EXPERIENCE / TIMELINE ====== -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Experience</h2>
+        <p class="section-desc">Highlights from the journey.</p>
+      </div>
+      <div class="timeline">
+        <div class="t-item">
+          <div class="dot" aria-hidden="true"></div>
+          <div class="t-card">
+            <h4>Frontend Developer</h4>
+            <small>2023 — Present</small>
+            <p>I participated in the Intra-college technical Hackathons and qualified till the last level.</p>
+          </div>
+        </div>
+        <div class="t-item">
+          <div class="dot" aria-hidden="true"></div>
+          <div class="t-card">
+            <h4>Codig Skills</h4>
+            <small>2023 — Present</small>
+            <p>I am proficient in <strong>HTML, CSS, JavaScript, and React</strong>, 
+            with experience in <strong>Bootstrap and Tailwind CSS</strong>. 
+            I also have a solid foundation in <strong>programming languages including C++, Python</strong> and 
+            problem-solving, making me capable of building interactive and scalable applications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CONTACT ====== -->
+  <section id="contact">
+    <div class="container contact">
+      <div class="contact-card">
+        <h2 class="section-title" style="margin:0 0 .5rem">Let's build something great</h2>
+        <p class="section-desc" style="margin:0 0 1rem">Currently open to freelance and full‑time opportunities. Drop a line and I’ll get back to you.</p>
+        <form action="#" method="post" onsubmit="return false">
+          <label class="sr" for="name">Arpan Tiwari</label>
+          <input id="name" type="text" placeholder="Your name" required>
+          <label class="sr" for="email">Email</label>
+          <input id="email" type="email" placeholder="arpantiwari381@gamil.com" required>
+          <label class="sr" for="msg">Message</label>
+          <textarea id="msg" placeholder="Tell me a bit about your project…" required></textarea>
+          <button class="btn primary" type="submit" aria-disabled="true" title="Demo only">Send message</button>
+        </form>
+      </div>
+      <div class="contact-card">
+        <h3 style="margin-top:0">Elsewhere</h3>
+        <p style="color:var(--muted);">Find me on the platforms below or email me directly.</p>
+        <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+          <a class="pill" href="mailto:arpantiwari381@gmail.com">✉️ Email</a>
+          <a class="pill" href="https://github.com/mega-bytes111" target="_blank" rel="noreferrer">💻 GitHub</a>
+          <a class="pill" href="https://www.linkedin.com/in/arpan-tiwari-1622032a9/" target="_blank" rel="noreferrer">🔗 LinkedIn</a>
+          <a class="pill" href="https://hashnode.com/@arpantiwari8266">🧠 Blog</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div>© <span id="y">2025</span> Arpan Tiwari. All rights reserved.</div>
+      <div class="foot">
+        <a href="#top">Back to top ↑</a>
+        <span>•</span>
+        <a href="#projects">Projects</a>
+        <span>•</span>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
